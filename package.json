@@ -12,6 +12,7 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "morgan": "~1.6.1",
+    "pdfkit": "^0.8.1",
     "react": "^15.5.4",
     "react-router": "^4.1.1",
     "semantic-ui": "^2.2.10",
