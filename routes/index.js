@@ -5,38 +5,35 @@ var path = require('path');
 
 var pdf = require('pdfkit');
 
+var makePdf = require('../modules/pdf.js');
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
 });
 router.get('/pdf',function(req,res,next){
     var doc = new pdf();
-    var b= new Buffer('我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国我在中国asdasdasdasd');
-    doc.pipe(fs.createWriteStream('file.pdf'));
-    //标题
-    let page = 0;
-    doc.on('pageAdded',function(){
-        page++
-    })
-    var p = doc.page;
-    doc.rect(10,10,p.width-20,20)
-       .fill('#ff0000');
-    doc.addPage();
-    doc.font('fonts/STSONG.TTF')
-       .image(path.join(__dirname,'../public/images/timg.jpg'),0,400)
-       .fill('#ff0000')
-       .fillColor('#00ff00')
-       .fontSize(12)
-       .text(b,100,600);
-
+    let resultPdf = doc.pipe(fs.createWriteStream('file.pdf'));
+    makePdf.h2(doc,'石大明',10,10);
+    doc.moveDown(1);
+    makePdf.text(doc,'男|6年工作经验|1990年3月|已婚');
+    doc.moveDown(0.4);
+    makePdf.text(doc,'现居住于广东 广州-天河区|大专| 户口安徽-安庆');
+    doc.moveDown(0.4);
+    makePdf.text(doc,'手机：15013306010');
+    makePdf.text(doc,'Email：290119516@qq.com');
+    doc.image('public/images/873b57828b3a0a67-77cabb970fa5d135-f7440e1fa71165595d808201d2aa9c50.jpg',doc.page.width-100,10,{width:80,height:100});
+    doc.moveDown(2);
+    makePdf.title(doc,'我的资料',10,doc.y)();
     doc.end();
-    console.log(page);
-    console.dir(p.document);
-    res.sendFile(path.join(__dirname,'../file.pdf'),{
-        header:{
-            'Content-Type':'application/pdf'
-        }
-    });
+
+    resultPdf.on('finish',()=>{
+        res.sendFile(path.join(__dirname,'../file.pdf'),{
+            header:{
+                'Content-Type':'application/pdf'
+            }
+        });
+    })
 })
 
 module.exports = router;
